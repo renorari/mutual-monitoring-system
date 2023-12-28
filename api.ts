@@ -25,6 +25,23 @@ router.get("/ping/all", async (req, res) => {
     const amount = req.query.amount ? parseInt(req.query.amount as string) : 30;
     res.json((await db.getData("/ping")).slice(-amount));
 });
+router.get("/ping/all/partner", async (req, res) => {
+    const amount = req.query.amount ? parseInt(req.query.amount as string) : 30;
+    fetch(process.env.PING_SERVER as string + "/api/ping/all?" + new URLSearchParams({
+        "amount": amount.toString()
+    }))
+        .then(res => res.json())
+        .then(data => {
+            res.json(data);
+        })
+        .catch(err => {
+            res.json({
+                status: "error",
+                date: new Date().getTime(),
+                data: err
+            });
+        });
+});
 
 setInterval(() => {
     fetch(process.env.PING_SERVER as string + "/api/ping?" + new URLSearchParams({
@@ -34,6 +51,7 @@ setInterval(() => {
         .then(data => {
             lastPing = {
                 status: "ok",
+                serverName: process.env.PING_SERVER_NAME,
                 date: new Date().getTime(),
                 data
             };
@@ -43,6 +61,7 @@ setInterval(() => {
         .catch(err => {
             lastPing = {
                 status: "error",
+                serverName: process.env.PING_SERVER_NAME,
                 date: new Date().getTime(),
                 data: err
             };
