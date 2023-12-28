@@ -27,7 +27,7 @@ router.get("/ping/all", async (req, res) => {
 });
 
 setInterval(() => {
-    fetch(process.env.PING_URL as string + "?" + new URLSearchParams({
+    fetch(process.env.PING_SERVER as string + "/api/ping?" + new URLSearchParams({
         "date": new Date().getTime().toString(),
     }))
         .then(res => res.json())
