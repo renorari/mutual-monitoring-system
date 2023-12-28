@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { router } from "./api";
 dotenv.config();
 const server = express();
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
