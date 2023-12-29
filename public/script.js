@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }]
         },
         options: {
+            animation: false,
             scales: {
                 yAxes: [{
                     beginAtZero: true
@@ -77,11 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 spanGaps: true
                             };
                         }
-                        chart.update({
-                            "duration": 0,
-                            "lazy": false,
-                            "easing": "easeOutBounce"
-                        });
+                        chart.update();
                     });
             });
     }
