@@ -1,5 +1,6 @@
 import express from "express";
 import { JsonDB, Config as JsonDBConfig } from "node-json-db";
+import cron from "node-cron";
 import dotenv from "dotenv";
 dotenv.config();
 const pingInterval = process.env.PING_INTERVAL ? parseInt(process.env.PING_INTERVAL) : 2;
@@ -43,7 +44,7 @@ router.get("/ping/all/partner", async (req, res) => {
         });
 });
 
-setInterval(() => {
+cron.schedule("*/" + pingInterval + " * * * * *", () => {
     fetch(process.env.PING_SERVER as string + "/api/ping?" + new URLSearchParams({
         "date": new Date().getTime().toString(),
     }))
@@ -68,6 +69,6 @@ setInterval(() => {
             db.push("/ping[]", lastPing);
             console.error(lastPing);
         });
-}, 1000 * pingInterval);
+});
 
 export { router };
