@@ -37,13 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         var datasetsOne = {};
                         var datasetsTwo = {};
                         data.forEach(d => {
-                            datasetsOne[d.date] = d;
+                            datasetsOne[new Date(d.date).toLocaleTimeString()] = d;
                         });
                         partnerData.forEach(d => {
-                            datasetsTwo[d.date] = d;
+                            datasetsTwo[new Date(d.date).toLocaleTimeString()] = d;
                         });
-                        const datasetsDates = [...new Set([...Object.keys(datasetsOne).map(d => Number(d)), ...Object.keys(datasetsTwo).map(d => Number(d))])].sort((a, b) => new Date(a) - new Date(b));
-                        chart.data.labels = datasetsDates.map(d => new Date(d).toLocaleTimeString());
+                        console.log(datasetsOne, datasetsTwo);
+                        const datasetsDates = [...new Set([...Object.keys(datasetsOne).map(d => new Date().setHours(d.split(":")[0], d.split(":")[1], d.split(":")[2])), ...Object.keys(datasetsTwo).map(d => new Date().setHours(d.split(":")[0], d.split(":")[1], d.split(":")[2]))])].sort((a, b) => a - b).map(d => new Date(d).toLocaleTimeString());
+                        chart.data.labels = datasetsDates;
                         if (chart.data.datasets[0]) {
                             chart.data.datasets[0].label = datasetsOneName;
                             chart.data.datasets[0].data = datasetsDates.map(d => {
